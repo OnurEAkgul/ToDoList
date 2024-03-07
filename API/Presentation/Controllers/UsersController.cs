@@ -97,8 +97,8 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO request)
         {
-            var result = await _userService.LoginAsync(request.Email, request.Password);
-
+            var result= await _userService.LoginAsync(request.Email, request.Password, request.UserName);
+        
             if (!result.Success)
             {
                 return BadRequest(result.Message);
@@ -107,7 +107,7 @@ namespace Presentation.Controllers
             var user = result.Data;
 
             // Generate JWT token
-            var tokenResult = await _tokenService.CreateJwtTokenAsync(user, await _userService.GetRolesAsync(user));
+            var tokenResult = await _tokenService.CreateJwtTokenAsync(user, await _userService.GetRolesAsync(user),request.RememberMe);
 
             var roles = await _userService.GetRolesAsync(user);
 
@@ -222,6 +222,7 @@ namespace Presentation.Controllers
             return BadRequest(result.Message);
         }
 
+
         [HttpGet("getAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -233,5 +234,28 @@ namespace Presentation.Controllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpGet]
+        [Route("GetUserById/{UserId}")]
+        public async Task<IActionResult> GetUserById([FromRoute] string UserId)
+        {
+
+            var result = await _userService.GetUserByIdAsync(UserId);
+            if (result.Success)
+            {
+                var response = new UserInfoDTO
+                {
+
+                    Email = result.Data.Email,
+                    UserId = result.Data.Id,
+                    UserName = result.Data.UserName,
+
+                };
+                // Perform the conversion from IdentityUser to UserDTO here if needed
+                return Ok(response);
+            }
+            return BadRequest(result.Message);
+        }
     }
+
 }

@@ -31,17 +31,25 @@ namespace Business.Concrete
                 : new ErrorResult(string.Join(", ", result.Errors));
         }
 
-        public async Task<IDataResult<IdentityUser>> LoginAsync(string email, string password)
+        public async Task<IDataResult<IdentityUser>> LoginAsync(string email, string password, string username)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            IdentityUser user = null;
+            if (!string.IsNullOrEmpty(email))
+            {
+                user = await _userManager.FindByEmailAsync(email);
+            }
 
+            // If user is not found by email, try finding by username
+            if (user == null && !string.IsNullOrEmpty(username))
+            {
+                user = await _userManager.FindByNameAsync(username);
+            }
             if (user != null && await _userManager.CheckPasswordAsync(user, password))
             {
                 return new SuccessDataResult<IdentityUser>(user, "Login successful.");
             }
 
             return new ErrorDataResult<IdentityUser>(null, "Invalid email or password.");
-
         }
 
         public async Task<IResult> UpdateUserAsync(IdentityUser user)

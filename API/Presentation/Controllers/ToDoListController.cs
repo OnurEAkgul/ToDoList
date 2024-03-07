@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract; // Adjust this namespace based on your actual structure
 using DataAccess.Domains; // Adjust this namespace based on your actual structure
-using DataAccess.DTOs.ToDoList; // Adjust this namespace based on your actual structure
+using DataAccess.DTOs.ToDoList;
+using System.Linq.Expressions; // Adjust this namespace based on your actual structure
 
 namespace Presentation.Controllers
 {
@@ -19,7 +20,95 @@ namespace Presentation.Controllers
             _toDoListService = toDoListService;
         }
 
-        [HttpGet("getAll")]
+
+        [HttpPost]
+        [Route("add/{UserId}")]
+        public async Task<IActionResult> Add([FromBody] AddNewToDoListDTO toDoListDTO ,[FromRoute] string UserId )
+        {
+            var request = new ToDoList
+            {
+                Title = toDoListDTO.Title,
+                Description = toDoListDTO.Description,
+                UserId = UserId,
+            };
+
+            var result = await _toDoListService.AddAsync(request);
+            
+            var response = new ToDoListDTO 
+            {
+                Id = request.Id,
+                Title = request.Title,
+                Description = request.Description,
+                IsCompleted = false,
+                UserId = UserId
+            };
+
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpDelete]
+        [Route("delete/{id:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
+        {
+            var result = await _toDoListService.DeleteAsync(new ToDoList
+            {
+                Id = Id,
+            });
+
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPut]
+        [Route("update/status/{Id:guid}")]
+        public async Task<IActionResult> UpdateStatus([FromRoute] Guid Id, CompleteDTO toDoListDTO)
+        {
+            var result = await _toDoListService.UpdateStatusAsync(new ToDoList
+            {
+                Id = Id,
+                //Title = toDoListDTO.Title,
+                //Description = toDoListDTO.Description,
+                IsCompleted = toDoListDTO.IsCompleted,
+                
+            });
+
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPut]
+        [Route("update/content/{Id:guid}")]
+        public async Task<IActionResult> UpdateContent([FromRoute] Guid Id, UpdateToDoListDTO toDoListDTO)
+        {
+            var result = await _toDoListService.UpdateContentAsync(new ToDoList
+            {
+                Id = Id,
+                Title = toDoListDTO.Title,
+                Description = toDoListDTO.Description,
+                //IsCompleted = toDoListDTO.IsCompleted,
+
+            });
+
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+
+
+        [HttpGet]
+        [Route("getAll")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _toDoListService.GetAllAsync();
@@ -40,61 +129,137 @@ namespace Presentation.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] ToDoListDTO toDoListDTO)
-        {
-            var result = await _toDoListService.AddAsync(new ToDoList
-            {
-                Id = toDoListDTO.Id,
-                Title = toDoListDTO.Title,
-                Description = toDoListDTO.Description,
-                IsCompleted = toDoListDTO.IsCompleted,
-                UserId = toDoListDTO.UserId
-            });
 
+        [HttpGet]
+        [Route("add/{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _toDoListService.GetByIdAsync(id);
             if (result.Success)
             {
-                return Ok(result.Message);
+                var toDoListDTOs = new ToDoListDTO
+                {
+                    Id = result.Data.Id,
+                    Title = result.Data.Title,
+                    Description = result.Data.Description,
+                    IsCompleted = result.Data.IsCompleted,
+                    UserId = result.Data.UserId
+
+                };
+                return Ok(toDoListDTOs);
             }
             return BadRequest(result.Message);
         }
 
-        [HttpDelete("delete")]
-        public async Task<IActionResult> Delete([FromBody] ToDoListDTO toDoListDTO)
+        [HttpGet]
+        [Route("userId/{userId}")]
+        public async Task<IActionResult> GetByUserId(string userId)
         {
-            var result = await _toDoListService.DeleteAsync(new ToDoList
-            {
-                Id = toDoListDTO.Id,
-                Title = toDoListDTO.Title,
-                Description = toDoListDTO.Description,
-                IsCompleted = toDoListDTO.IsCompleted,
-                UserId = toDoListDTO.UserId
-            });
-
+            var result = await _toDoListService.GetByUserIdAsync(userId);
             if (result.Success)
             {
-                return Ok(result.Message);
+                var toDoListDTOs = result.Data
+                    .Select(entity => new ToDoListDTO
+                    {
+                        Id = entity.Id,
+                        Title = entity.Title,
+                        Description = entity.Description,
+                        IsCompleted = entity.IsCompleted,
+                        UserId = entity.UserId
+
+                    });
+                return Ok(toDoListDTOs);
             }
             return BadRequest(result.Message);
         }
 
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] ToDoListDTO toDoListDTO)
+        [HttpGet]
+        [Route("Completed")]
+        public async Task<IActionResult> GetCompleted()
         {
-            var result = await _toDoListService.UpdateAsync(new ToDoList
-            {
-                Id = toDoListDTO.Id,
-                Title = toDoListDTO.Title,
-                Description = toDoListDTO.Description,
-                IsCompleted = toDoListDTO.IsCompleted,
-                UserId = toDoListDTO.UserId
-            });
-
+            var result = await _toDoListService.GetCompletedAsync();
             if (result.Success)
             {
-                return Ok(result.Message);
+                var toDoListDTOs = result.Data
+                    .Select(entity => new ToDoListDTO
+                    {
+                        Id = entity.Id,
+                        Title = entity.Title,
+                        Description = entity.Description,
+                        IsCompleted = entity.IsCompleted,
+                        UserId = entity.UserId
+
+                    });
+                return Ok(toDoListDTOs);
             }
             return BadRequest(result.Message);
         }
+
+        [HttpGet]
+        [Route("NotCompleted")]
+        public async Task<IActionResult> GetNotCompleted()
+        {
+            var result = await _toDoListService.GetNotCompletedAsync();
+            if (result.Success)
+            {
+                var toDoListDTOs = result.Data
+                    .Select(entity => new ToDoListDTO
+                    {
+                        Id = entity.Id,
+                        Title = entity.Title,
+                        Description = entity.Description,
+                        IsCompleted = entity.IsCompleted,
+                        UserId = entity.UserId
+
+                    });
+                return Ok(toDoListDTOs);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet]
+        [Route("Completed/{userId}")]
+        public async Task<IActionResult> GetCompletedByUser([FromRoute] string userId)
+        {
+            var result = await _toDoListService.GetCompletedByUserIdAsync(userId);
+            if (result.Success)
+            {
+                var toDoListDTOs = result.Data
+                    .Select(entity => new ToDoListDTO
+                    {
+                        Id = entity.Id,
+                        Title = entity.Title,
+                        Description = entity.Description,
+                        IsCompleted = entity.IsCompleted,
+                        UserId = entity.UserId
+
+                    });
+                return Ok(toDoListDTOs);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet]
+        [Route("NotCompleted/{userId}")]
+        public async Task<IActionResult> GetNotCompletedByUser([FromRoute] string userId)
+        {
+            var result = await _toDoListService.GetNotCompletedByUserIdAsync(userId);
+            if (result.Success)
+            {
+                var toDoListDTOs = result.Data
+                    .Select(entity => new ToDoListDTO
+                    {
+                        Id = entity.Id,
+                        Title = entity.Title,
+                        Description = entity.Description,
+                        IsCompleted = entity.IsCompleted,
+                        UserId = entity.UserId
+
+                    });
+                return Ok(toDoListDTOs);
+            }
+            return BadRequest(result.Message);
+        }
+
     }
 }

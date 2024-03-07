@@ -22,7 +22,7 @@ namespace Business.Concrete
             _configuration = configuration;
         }
 
-        public async Task<IDataResult<string>> CreateJwtTokenAsync(IdentityUser user, List<string> roles)
+        public async Task<IDataResult<string>> CreateJwtTokenAsync(IdentityUser user, List<string> roles, bool rememberMe)
         {
             try
             {
@@ -37,7 +37,8 @@ namespace Business.Concrete
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, identityUser.UserName), // Kullanıcı adını içeren talep
-                    new Claim(ClaimTypes.Email, identityUser.Email) // E-postayı içeren talep
+                    new Claim(ClaimTypes.Email, identityUser.Email), // E-postayı içeren talep
+                    new Claim(ClaimTypes.NameIdentifier, identityUser.Id)
                 };
 
                 // Rolleri taleplere ekle
@@ -47,7 +48,7 @@ namespace Business.Concrete
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.UtcNow.AddHours(1),
+                    Expires = rememberMe ? DateTime.UtcNow.AddMonths(1) : DateTime.UtcNow.AddMinutes(15),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 };
 

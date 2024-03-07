@@ -10,7 +10,7 @@ namespace Business.Abstract
 {
     public interface ITokenService
     {
-        Task<IDataResult<string>> CreateJwtTokenAsync(IdentityUser user, List<string> roles);
+        Task<IDataResult<string>> CreateJwtTokenAsync(IdentityUser user, List<string> roles,bool rememberMe);
         Task<IDataResult<bool>> ValidateTokenAsync(string token);
     }
 }

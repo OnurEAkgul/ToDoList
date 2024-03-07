@@ -11,7 +11,7 @@ namespace Business.Abstract
     public interface IUserService
     {
         Task<IResult> SignUpAsync(IdentityUser user, string password);
-        Task<IDataResult<IdentityUser>> LoginAsync(string email, string password);
+        Task<IDataResult<IdentityUser>> LoginAsync(string email, string password,string username);
         Task<IResult> UpdateUserAsync(IdentityUser user);
         Task<IResult> DeleteUserAsync(string userId);
         Task<IDataResult<IdentityUser>> GetUserByNameAsync(string name);
