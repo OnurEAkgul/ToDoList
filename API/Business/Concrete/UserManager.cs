@@ -28,7 +28,7 @@ namespace Business.Concrete
 
             return result.Succeeded
                 ? new SuccessResult("User registered successfully.")
-                : new ErrorResult(string.Join(", ", result.Errors));
+                : new ErrorResult(string.Join(", ", "Kayıt oluşturma hatası"));
         }
 
         public async Task<IDataResult<IdentityUser>> LoginAsync(string email, string password, string username)
@@ -62,7 +62,7 @@ namespace Business.Concrete
 
             return result.Succeeded
                 ? new SuccessResult("User updated successfully.")
-                : new ErrorResult(string.Join(", ", result.Errors));
+                : new ErrorResult(string.Join(", ", "Kullanıcı güncelleme hatası"));
         }
 
         public async Task<IResult> DeleteUserAsync(string userId)
@@ -78,7 +78,7 @@ namespace Business.Concrete
 
             return result.Succeeded
                 ? new SuccessResult("User deleted successfully.")
-                : new ErrorResult(string.Join(", ", result.Errors));
+                : new ErrorResult(string.Join(", ","Kullanıcı silme hatası"));
         }
 
         public async Task<IDataResult<IdentityUser>> GetUserByNameAsync(string name)

@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Business.Abstract; // Adjust this namespace based on your actual structure
 using DataAccess.Domains; // Adjust this namespace based on your actual structure
 using DataAccess.DTOs.ToDoList;
-using System.Linq.Expressions; // Adjust this namespace based on your actual structure
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization; // Adjust this namespace based on your actual structure
 
 namespace Presentation.Controllers
 {
@@ -22,6 +23,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "userRole")]
         [Route("add/{UserId}")]
         public async Task<IActionResult> Add([FromBody] AddNewToDoListDTO toDoListDTO ,[FromRoute] string UserId )
         {
@@ -34,14 +36,7 @@ namespace Presentation.Controllers
 
             var result = await _toDoListService.AddAsync(request);
             
-            var response = new ToDoListDTO 
-            {
-                Id = request.Id,
-                Title = request.Title,
-                Description = request.Description,
-                IsCompleted = false,
-                UserId = UserId
-            };
+          
 
             if (result.Success)
             {
@@ -51,6 +46,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "userRole")]
         [Route("delete/{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
@@ -67,6 +63,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "userRole")]
         [Route("update/status/{Id:guid}")]
         public async Task<IActionResult> UpdateStatus([FromRoute] Guid Id, CompleteDTO toDoListDTO)
         {
@@ -87,6 +84,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "userRole")]
         [Route("update/content/{Id:guid}")]
         public async Task<IActionResult> UpdateContent([FromRoute] Guid Id, UpdateToDoListDTO toDoListDTO)
         {
@@ -108,6 +106,7 @@ namespace Presentation.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "adminRole")]
         [Route("getAll")]
         public async Task<IActionResult> GetAll()
         {
@@ -131,6 +130,7 @@ namespace Presentation.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "userRole")]
         [Route("add/{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -152,6 +152,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "userRole")]
         [Route("userId/{userId}")]
         public async Task<IActionResult> GetByUserId(string userId)
         {
@@ -174,6 +175,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "adminRole")]
         [Route("Completed")]
         public async Task<IActionResult> GetCompleted()
         {
@@ -196,6 +198,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "adminRole")]
         [Route("NotCompleted")]
         public async Task<IActionResult> GetNotCompleted()
         {
@@ -218,6 +221,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "userRole")]
         [Route("Completed/{userId}")]
         public async Task<IActionResult> GetCompletedByUser([FromRoute] string userId)
         {
@@ -240,6 +244,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "userRole")]
         [Route("NotCompleted/{userId}")]
         public async Task<IActionResult> GetNotCompletedByUser([FromRoute] string userId)
         {

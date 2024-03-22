@@ -15,15 +15,15 @@ namespace DataAccess.DTOs.Users
         public List<string> Roles { get; set; }
         // Add other properties if needed
 
-        public UserDTO(IdentityUser user, List<string> roles)
-        {
-            UserId = user.Id;
-            UserName = user.UserName;
-            Email = user.Email;
-            Roles = roles;
+        //public UserDTO(IdentityUser user, List<string> roles)
+        //{
+        //    UserId = user.Id;
+        //    UserName = user.UserName;
+        //    Email = user.Email;
+        //    Roles = roles;
 
-            // Map other properties as needed
-        }
+        //    // Map other properties as needed
+        //}
 
     }
 }

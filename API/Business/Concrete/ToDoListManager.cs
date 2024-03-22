@@ -114,7 +114,6 @@ public class ToDoListManager : IToDoListService
             return new ErrorDataResult<List<ToDoList>>(null, $"Error while retrieving not completed ToDoList items: {ex.Message}");
         }
     }
-
     public async Task<IDataResult<List<ToDoList>>> GetCompletedByUserIdAsync(string userId)
     {
         try

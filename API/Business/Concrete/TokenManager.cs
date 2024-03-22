@@ -31,7 +31,7 @@ namespace Business.Concrete
                 var tokenHandler = new JwtSecurityTokenHandler();
 
                 // JWT için kullanılacak anahtarı byte dizisine çevir
-                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
                 // JWT token'da bulunacak talepleri tanımla
                 var claims = new List<Claim>
@@ -47,9 +47,11 @@ namespace Business.Concrete
                 // JWT token parametrelerini belirle
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
+                    Issuer = _configuration["Jwt:Issuer"],
+                    Audience = _configuration["Jwt:Audience"],
                     Subject = new ClaimsIdentity(claims),
                     Expires = rememberMe ? DateTime.UtcNow.AddMonths(1) : DateTime.UtcNow.AddMinutes(15),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                    SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature),
                 };
 
                 // Token oluştur
@@ -71,13 +73,13 @@ namespace Business.Concrete
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
                 // Token doğrulama parametrelerini belirle
                 var validationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = key,
                     ValidateIssuer = false, // İstekte bulunana özel duruma göre bu değerleri ayarlayabilirsiniz
                     ValidateAudience = false, // İstekte bulunana özel duruma göre bu değerleri ayarlayabilirsiniz
                     RequireExpirationTime = true,

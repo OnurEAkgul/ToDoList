@@ -5,6 +5,7 @@ using Core.Utilities.Results;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Domains; // Adjust this namespace based on your actual structure
 using DataAccess.DTOs.Users; // Adjust this namespace based on your actual structure
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -101,7 +102,7 @@ namespace Presentation.Controllers
         
             if (!result.Success)
             {
-                return BadRequest(result.Message);
+                return BadRequest("Hatalı giriş");
 
             }
             var user = result.Data;
@@ -110,7 +111,11 @@ namespace Presentation.Controllers
             var tokenResult = await _tokenService.CreateJwtTokenAsync(user, await _userService.GetRolesAsync(user),request.RememberMe);
 
             var roles = await _userService.GetRolesAsync(user);
-
+            var validateToken = await _tokenService.ValidateTokenAsync(tokenResult.Data);
+            if (!validateToken.Success)
+            {
+                return ValidationProblem("Token doğrulama hatası") ;
+            }
             if (tokenResult.Success)
             {
 
@@ -118,11 +123,7 @@ namespace Presentation.Controllers
 
                 var respone = new UserLoginResponeDTO
                 {
-                    Email = user.Email.Trim(),
-                    Roles = roles.ToList(),
                     Token = token,
-                    UserId = user.Id,
-                    UserName = user.UserName.Trim()
 
                 };
 
@@ -134,6 +135,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "userRole")]
         [Route("Update/{UserId}")]
         public async Task<IActionResult> UpdateUser([FromRoute] string UserId, UserUpdateDTO userUpdateDTO)
         {
@@ -211,6 +213,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "userRole")]
         [Route("DeleteUser/{UserId}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string UserId)
         {
@@ -224,9 +227,12 @@ namespace Presentation.Controllers
 
 
         [HttpGet("getAllUsers")]
+        [Authorize(Roles ="adminRole")]
         public async Task<IActionResult> GetAllUsers()
         {
             var result = await _userService.GetAllUsersAsync();
+
+           
             if (result.Success)
             {
                 // Perform the conversion from IdentityUser to UserDTO here if needed
@@ -236,6 +242,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "userRole")]
         [Route("GetUserById/{UserId}")]
         public async Task<IActionResult> GetUserById([FromRoute] string UserId)
         {
