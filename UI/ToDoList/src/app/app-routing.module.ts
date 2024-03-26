@@ -13,6 +13,7 @@ import { AdminUsersUpdateComponent } from './core/components/Admin/admin-users-u
 import { LandingComponent } from './core/landing/landing.component';
 import { LandingRoutingModule } from './core/landing/landing-routing.module';
 import { authGuard } from './core/components/guards/auth.guard';
+import { UserInformationComponent } from './core/components/features/user-information/user-information.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'admin/users',
         component: AdminUsersTableComponent,
+      },
+      {
+        path: 'user/info/:id',
+        component: UserInformationComponent,
       },
       {
         path: 'admin/users/guncelle/:UserId',

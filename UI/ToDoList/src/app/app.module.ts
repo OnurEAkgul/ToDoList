@@ -28,6 +28,7 @@ import { DividerModule } from 'primeng/divider';
 import { LandingRoutingModule } from './core/landing/landing-routing.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { UserInformationComponent } from './core/components/features/user-information/user-information.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AdminToDoListUpdateComponent,
     AdminUsersUpdateComponent,
     LandingComponent,
+    UserInformationComponent,
   ],
   imports: [
     BrowserModule,

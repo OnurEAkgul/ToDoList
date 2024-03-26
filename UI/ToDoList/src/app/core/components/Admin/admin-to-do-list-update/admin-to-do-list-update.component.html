@@ -1,1 +1,55 @@
-<p>admin-to-do-list-update works!</p>
+<div class="card-header">
+    <h3>Update Item</h3>
+</div>
+
+<div class="card-body">
+
+    <div style="padding: 25px">
+
+        <form #ngForm="ngForm" id="profile-form" (ngSubmit)="update()">
+
+            <br />
+            <br>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label m--regular-font-size-lg1">title*
+                </label>
+                <div class="col-lg-9 col-xl-6">
+                    <input pInputText type="text" [(ngModel)]="TodoModel.title" id="title" name="title" required
+                        #title="ngModel"
+                        class="form-control form-control-lg form-control-solid ng-pristine ng-valid ng-touched">
+                </div>
+                <div *ngIf="title.touched && title.invalid" class="text-danger mb-2">
+                    Please enter a valid title
+                </div>
+            </div><br>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label m--regular-font-size-lg1">description*
+                </label>
+                <div class="col-lg-9 col-xl-6">
+                    <input pInputText type="text" [(ngModel)]="TodoModel.description" id="description"
+                        name="description" required #description="ngModel"
+                        class="form-control form-control-lg form-control-solid ng-pristine ng-valid ng-touched">
+                </div>
+                <div *ngIf="description.touched && description.invalid" class="text-danger mb-2">
+                    Please enter a valid name
+                </div>
+            </div>
+            <br>
+
+            <br>
+            <br>
+            <button type="submit" [disabled]="ngForm.invalid"
+                [style]="{ 'background-color': (ngForm.invalid) ? 'rgb(200, 200, 200)' : 'rgb(117, 170, 117)' }"
+                style="border: none; padding: 5px;border-radius: 5px;background-color: rgb(117, 170, 117);color: white;margin-right: 10px;">
+                <span style="font-size: 12px; margin-left: 2px; margin-right: 2px">
+                    Save</span>
+            </button>
+            <button [routerLink]="['/main/admin/tablo']"
+                style="border: none;padding: 5px;border-radius: 5px;background-color: rgb(236, 212, 30);color: black;margin-right: 10px; ">
+                <span style="font-size: 12px; margin-left: 2px; margin-right: 2px">
+                    back</span>
+            </button>
+        </form>
+    </div>
+
+</div>

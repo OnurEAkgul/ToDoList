@@ -43,6 +43,32 @@
                     </div>
                 </div>
                 <br>
+
+
+
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label m--regular-font-size-lg1">Current Password*
+                    </label>
+                    <div class="col-lg-9 col-xl-6">
+                        <input pInputText type="password" [(ngModel)]="model.currentPassword" id="currentPassword"
+                            name="currentPassword" required #currentPassword="ngModel"
+                            class="form-control form-control-lg form-control-solid ng-pristine ng-valid ng-touched">
+                    </div>
+                    <div *ngIf="currentPassword.touched && currentPassword.invalid" class="text-danger mb-2">
+                        Please enter your password
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label m--regular-font-size-lg1">New Password
+                    </label>
+                    <div class="col-lg-9 col-xl-6">
+                        <input pInputText type="password" [(ngModel)]="model.newPassword" id="Password" name="Password"
+                            #passwordInput="ngModel"
+                            class="form-control form-control-lg form-control-solid ng-pristine ng-valid ng-touched">
+                    </div>
+                </div>
+
                 <br>
                 <button type="submit" [disabled]="ngForm.invalid"
                     [style]="{ 'background-color': (ngForm.invalid) ? 'rgb(200, 200, 200)' : 'rgb(117, 170, 117)' }"
@@ -51,7 +77,7 @@
                         Save</span>
                 </button>
 
-                <button [routerLink]="['/main/admin/users']"
+                <button [routerLink]="['/main']"
                     style="border: none;padding: 5px;border-radius: 5px;background-color: rgb(236, 212, 30);color: black;margin-right: 10px; ">
                     <span style="font-size: 12px; margin-left: 2px; margin-right: 2px">
                         back</span>

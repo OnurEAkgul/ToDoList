@@ -98,8 +98,8 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO request)
         {
-            var result= await _userService.LoginAsync(request.Email, request.Password, request.UserName);
-        
+            var result = await _userService.LoginAsync(request.Email, request.Password, request.UserName);
+
             if (!result.Success)
             {
                 return BadRequest("Hatalı giriş");
@@ -108,13 +108,13 @@ namespace Presentation.Controllers
             var user = result.Data;
 
             // Generate JWT token
-            var tokenResult = await _tokenService.CreateJwtTokenAsync(user, await _userService.GetRolesAsync(user),request.RememberMe);
+            var tokenResult = await _tokenService.CreateJwtTokenAsync(user, await _userService.GetRolesAsync(user), request.RememberMe);
 
             var roles = await _userService.GetRolesAsync(user);
             var validateToken = await _tokenService.ValidateTokenAsync(tokenResult.Data);
             if (!validateToken.Success)
             {
-                return ValidationProblem("Token doğrulama hatası") ;
+                return ValidationProblem("Token doğrulama hatası");
             }
             if (tokenResult.Success)
             {
@@ -137,7 +137,7 @@ namespace Presentation.Controllers
         [HttpPut]
         [Authorize(Roles = "userRole")]
         [Route("Update/{UserId}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] string UserId, UserUpdateDTO userUpdateDTO)
+        public async Task<IActionResult> UpdateUser([FromRoute] string UserId, UserUpdateDTO userUpdateDTO, [FromQuery] bool isAdminUpdate)
         {
 
             // İstek geçerli değilse BadRequest döndür
@@ -151,58 +151,89 @@ namespace Presentation.Controllers
 
                 try
                 {
-                    var identityUser = await _userManager.FindByIdAsync(UserId);
-
-                    if (identityUser == null)
+                    if (isAdminUpdate)
                     {
-                        return NotFound();
+                        var identityUser = await _userManager.FindByIdAsync(UserId);
+
+                        if (identityUser == null)
+                        {
+                            return NotFound();
+                        }
+
+                        else
+                        {
+                            // Update the existing IdentityUser with the new information
+                            identityUser.UserName = userUpdateDTO.UserName;
+                            identityUser.Email = userUpdateDTO.Email;
+                            identityUser.NormalizedEmail = userUpdateDTO.Email.Trim().ToUpper();
+                            identityUser.NormalizedUserName = userUpdateDTO.UserName.Trim().ToUpper();
+
+                            var result = await _userService.UpdateUserAsync(identityUser);
+
+                            if (!result.Success)
+                            {
+                                throw new Exception(result.Message);
+                            }
+                        }
+                        var response= new UserUpdateDTO { Email = userUpdateDTO.UserName, UserName = userUpdateDTO.Email };
+                        await Transaction.CommitAsync();
+
+                        return Ok(response);
                     }
 
-                    bool isAdmin = await _userManager.IsInRoleAsync(identityUser, "adminRole");
-
-                    if (!isAdmin || (isAdmin && string.IsNullOrEmpty(userUpdateDTO.NewPassword)))
+                    else
                     {
+                        var identityUser = await _userManager.FindByIdAsync(UserId);
+
+                        if (identityUser == null)
+                        {
+                            return NotFound();
+                        }
+
+
+
                         if (!await _userManager.CheckPasswordAsync(identityUser, userUpdateDTO.CurrentPassword))
                         {
                             return BadRequest("Yanlış şifre girdiniz");
                         }
-                    }
 
-                    if (!string.IsNullOrEmpty(userUpdateDTO.NewPassword))
-                    {
-                        // Update the existing IdentityUser with the new information
-                        identityUser.UserName = userUpdateDTO.UserName;
-                        identityUser.Email = userUpdateDTO.Email;
-                        identityUser.NormalizedEmail = userUpdateDTO.Email.Trim().ToUpper();
-                        identityUser.NormalizedUserName = userUpdateDTO.UserName.Trim().ToUpper();
-                        identityUser.PasswordHash = _userManager.PasswordHasher.HashPassword(identityUser, userUpdateDTO.NewPassword);
 
-                        var result = await _userService.UpdateUserAsync(identityUser);
-
-                        if (!result.Success)
+                        if (!string.IsNullOrEmpty(userUpdateDTO.NewPassword))
                         {
-                            throw new Exception(result.Message);
+                            // Update the existing IdentityUser with the new information
+                            identityUser.UserName = userUpdateDTO.UserName;
+                            identityUser.Email = userUpdateDTO.Email;
+                            identityUser.NormalizedEmail = userUpdateDTO.Email.Trim().ToUpper();
+                            identityUser.NormalizedUserName = userUpdateDTO.UserName.Trim().ToUpper();
+                            identityUser.PasswordHash = _userManager.PasswordHasher.HashPassword(identityUser, userUpdateDTO.NewPassword);
+
+                            var result = await _userService.UpdateUserAsync(identityUser);
+
+                            if (!result.Success)
+                            {
+                                throw new Exception(result.Message);
+                            }
                         }
-                    }
-                    else
-                    {
-                        // Update the existing IdentityUser with the new information
-                        identityUser.UserName = userUpdateDTO.UserName;
-                        identityUser.Email = userUpdateDTO.Email;
-                        identityUser.NormalizedEmail = userUpdateDTO.Email.Trim().ToUpper();
-                        identityUser.NormalizedUserName = userUpdateDTO.UserName.Trim().ToUpper();
-
-                        var result = await _userService.UpdateUserAsync(identityUser);
-
-                        if (!result.Success)
+                        else
                         {
-                            throw new Exception(result.Message);
+                            // Update the existing IdentityUser with the new information
+                            identityUser.UserName = userUpdateDTO.UserName;
+                            identityUser.Email = userUpdateDTO.Email;
+                            identityUser.NormalizedEmail = userUpdateDTO.Email.Trim().ToUpper();
+                            identityUser.NormalizedUserName = userUpdateDTO.UserName.Trim().ToUpper();
+
+                            var result = await _userService.UpdateUserAsync(identityUser);
+
+                            if (!result.Success)
+                            {
+                                throw new Exception(result.Message);
+                            }
                         }
+
+                        await Transaction.CommitAsync();
+
+                        return Ok(userUpdateDTO);
                     }
-
-                    await Transaction.CommitAsync();
-
-                    return Ok(userUpdateDTO);
                 }
                 catch (Exception ex)
                 {
@@ -227,12 +258,12 @@ namespace Presentation.Controllers
 
 
         [HttpGet("getAllUsers")]
-        [Authorize(Roles ="adminRole")]
+        [Authorize(Roles = "adminRole")]
         public async Task<IActionResult> GetAllUsers()
         {
             var result = await _userService.GetAllUsersAsync();
 
-           
+
             if (result.Success)
             {
                 // Perform the conversion from IdentityUser to UserDTO here if needed
@@ -254,7 +285,7 @@ namespace Presentation.Controllers
                 {
 
                     Email = result.Data.Email,
-                    UserId = result.Data.Id,
+                    //UserId = result.Data.Id,
                     UserName = result.Data.UserName,
 
                 };

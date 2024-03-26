@@ -43,16 +43,32 @@ export class UserService {
     localStorage.clear();
 
     this.cookieService.delete('Authorization');
+    // console.log('here');
+    if (this.cookieService.check('Authorization')) {
+      console.log(this.cookieService.get('Authorization'));
+      this.cookieService.delete('Authorization');
+    }
   }
 
   //   PUT
   // /api/Users/Update/{UserId}
 
-  UpdateUser(userId: string, updateModel: UserUpdate): Observable<any> {
-    return this.http.put<any>(
-      `${this.ApiBaseUrl}/Users/Update/${userId}`,
-      updateModel
-    );
+  UpdateUser(
+    userId: string,
+    updateModel: UserUpdate,
+    isAdmin: boolean
+  ): Observable<any> {
+    if (isAdmin) {
+      return this.http.put<any>(
+        `${this.ApiBaseUrl}/Users/Update/${userId}/?isAdminUpdate=true`,
+        updateModel
+      );
+    } else {
+      return this.http.put<any>(
+        `${this.ApiBaseUrl}/Users/Update/${userId}`,
+        updateModel
+      );
+    }
   }
 
   // DELETE

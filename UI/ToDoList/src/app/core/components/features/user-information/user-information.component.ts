@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserUpdate } from '../../Authentication/models/user-update.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../Authentication/services/user.service';
+import { userRequest } from '../../Authentication/models/user.model';
+
 @Component({
-  selector: 'app-admin-users-update',
-  templateUrl: './admin-users-update.component.html',
-  styleUrls: ['./admin-users-update.component.css'],
+  selector: 'app-user-information',
+  templateUrl: './user-information.component.html',
+  styleUrls: ['./user-information.component.css'],
 })
-export class AdminUsersUpdateComponent implements OnInit {
+export class UserInformationComponent implements OnInit {
   model: UserUpdate;
 
   userId: string = '';
@@ -28,7 +30,7 @@ export class AdminUsersUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe({
       next: (params) => {
-        const idParam = params.get('UserId');
+        const idParam = params.get('id');
         if (idParam !== null) {
           this.userId = idParam;
           console.log(this.userId);
@@ -71,9 +73,9 @@ export class AdminUsersUpdateComponent implements OnInit {
   update() {
     console.log(this.model);
     this.userService
-      .UpdateUser(this.userId, this.model, true)
+      .UpdateUser(this.userId, this.model, false)
       .subscribe((response) => {
-        this.router.navigateByUrl('/main/admin/users');
+        this.router.navigateByUrl('/main');
         console.log(response);
       });
   }

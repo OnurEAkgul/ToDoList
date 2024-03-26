@@ -6,6 +6,7 @@ import { TodolistService } from '../services/todolist.service';
 import { TableGetResponse } from '../models/table-get-response.model';
 import { UpdateStatusRequest } from '../models/table-update-status-request.model';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-to-do-list-table',
   templateUrl: './to-do-list-table.component.html',
@@ -24,7 +25,8 @@ export class ToDoListTableComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private listService: TodolistService
+    private listService: TodolistService,
+    private router: Router
   ) {
     this.TokenContent = {
       unique_name: '',
@@ -49,6 +51,9 @@ export class ToDoListTableComponent implements OnInit, OnDestroy {
     this.TokenControl = this.cookieService.check('Authorization');
     if (this.TokenControl) {
       this.TokenContent = this.userService.tokenDecode();
+      if (this.TokenContent.role.includes('adminRole')) {
+        this.router.navigateByUrl('/main/admin/tablo');
+      }
       // console.log(this.TokenContent.nameid);
       this.GetTableContent(this.TokenContent.nameid);
     }
