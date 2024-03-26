@@ -8,14 +8,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   const cookieService = inject(CookieService);
   const userService = inject(UserService);
   const router = inject(Router);
-  const user = userService.getUserFromLocalStorage();
-
-  const expectedUserId = route.params['userId'];
+  //const user = userService.getUserFromLocalStorage();
 
   let token = cookieService.get('Authorization');
 
-  // console.log(user);
-  if (token && user) {
+  // console.log(user); && user
+  if (token) {
     token = token.replace('Bearer', '');
     const decodedToken: any = jwtDecode(token);
 
@@ -27,34 +25,33 @@ export const authGuard: CanActivateFn = (route, state) => {
     console.log(expirationDate < currentTime);
     if (expirationDate < currentTime) {
       //token expired
-      alert('İnaktiflikten dolayı çıkış yapılmıştır');
+      alert(
+        'İnaktiflikten dolayı çıkış yapılmıştır. Lütfen tekrar giriş yapın'
+      );
       userService.logout();
-      return router.createUrlTree(['userislem/giris'], {
+      return router.createUrlTree(['/Login'], {
         queryParams: { returnUrl: state.url },
       });
     } else {
-      if (user.role.includes('adminRole')) {
+      if (decodedToken.role.includes('adminRole')) {
         return true;
       } else {
         //token still valid
 
         // console.log(expectedUserId);
         // console.log(user.userId);
-        if (user.role.includes('userRole') && user.userId === expectedUserId) {
-          return true;
-        }
-        if (user.role.includes('adminRole')) {
+        if (decodedToken.role.includes('userRole') && decodedToken.nameid) {
           return true;
         } else {
-          alert('Unauthorized');
+          alert('Geçersiz yetki');
           return false;
         }
       }
     }
   } else {
     userService.logout();
-    alert('Unauthorized');
-    return router.createUrlTree(['userislem/giris'], {
+    alert('Lütfen Giriş yapın');
+    return router.createUrlTree(['/Login'], {
       queryParams: { returnUrl: state.url },
     });
   }

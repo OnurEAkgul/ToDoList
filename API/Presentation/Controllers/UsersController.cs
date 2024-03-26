@@ -220,7 +220,7 @@ namespace Presentation.Controllers
             var result = await _userService.DeleteUserAsync(UserId);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(new { message = "A User has been successfully deleted" });
             }
             return BadRequest(result.Message);
         }

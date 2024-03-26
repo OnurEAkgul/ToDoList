@@ -20,14 +20,17 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // Gelen isteği klonlama
-    const authRequest = request.clone({
-      // Klonlanan isteğin başlıklarına 'Authorization' başlığını eklemek
-      setHeaders: {
-        Authorization: this.cookieService.get('Authorization'),
-      },
-    });
-    // Değiştirilmiş isteği ileri gönderme
+    var authToken = this.cookieService.get('Authorization');
+
+    let authRequest = request;
+    if (authToken) {
+      authRequest = request.clone({
+        setHeaders: {
+          Authorization: authToken,
+        },
+      });
+    }
+
     return next.handle(authRequest);
   }
 }

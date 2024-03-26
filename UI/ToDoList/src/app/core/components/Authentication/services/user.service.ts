@@ -8,108 +8,71 @@ import { userRequest } from '../models/user.model';
 import { UserUpdate } from '../models/user-update.model';
 import { signupRequest } from '../models/user-signup-request.model';
 import { loginResponse } from '../models/loginRespone.model';
-import { userInformation } from '../models/userInfo.model';
+
 import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  $userInfo = new BehaviorSubject<userInformation | undefined>(undefined);
-
   constructor(private http: HttpClient, private cookieService: CookieService) {}
-
+  ApiBaseUrl = environment.apiBaseUrl + '/api';
   userEkle(model: signupRequest): Observable<userRequest> {
     return this.http.post<userRequest>(
-      `${environment.apiBaseUrl}/api/Users/signUp`,
+      `${this.ApiBaseUrl}/Users/signUp`,
       model
     );
   }
-
   userLogin(model: userLogin): Observable<loginResponse> {
-    return this.http.post<loginResponse>(
-      `${environment.apiBaseUrl}/api/Users/login`,
-      {
-        UserName: model.UserName,
-        Password: model.Password,
-        Email: model.Email,
-        RememberMe: model.RememberMe,
-      }
-    );
+    return this.http.post<loginResponse>(`${this.ApiBaseUrl}/Users/login`, {
+      UserName: model.UserName,
+      Password: model.Password,
+      Email: model.Email,
+      RememberMe: model.RememberMe,
+    });
   }
-
-  setUser(user: userInformation): void {
-    this.$userInfo.next(user);
-    localStorage.setItem('user', JSON.stringify(user));
-
-    // localStorage.setItem('userEmail',user.userEmail);
-    // localStorage.setItem('userName', user.userName);
-    // localStorage.setItem('userId', user.userId);
-    // localStorage.setItem('token', user.token);
-    // localStorage.setItem('role', user.role.join(','));
-  }
-
-  getUserFromLocalStorage(): userInformation | undefined {
-    const userString = localStorage.getItem('user');
-    if (!userString) return undefined;
-
-    return JSON.parse(userString) as userInformation;
-    // const userEmail = localStorage.getItem('userEmail');
-    // const userName = localStorage.getItem('userName');
-    // const userId = localStorage.getItem('userId');
-    // const token = localStorage.getItem('token');
-    // const roleString = localStorage.getItem('role');
-
-    // if (userEmail&&userName && userId && token && roleString) {
-    //   const roles = roleString.split(','); // Convert comma-separated string to array
-    //   return { userEmail,userId, userName, token, role: roles };
-    // }
-
-    // If any of the required information is missing, return 'undefined'
-    return undefined;
+  tokenDecode() {
+    let Token = this.cookieService.get('Authorization');
+    Token = Token.replace('Bearer', '');
+    const decodedToken: any = jwtDecode(Token);
+    // console.log(decodedToken);
+    return decodedToken;
   }
   logout(): void {
     localStorage.clear();
+
     this.cookieService.delete('Authorization');
-    this.$userInfo.next(undefined);
-  }
-  user(): Observable<userInformation | undefined> {
-    return this.$userInfo.asObservable();
   }
 
-  userGoruntuleID(userId: string): Observable<userRequest> {
+  //   PUT
+  // /api/Users/Update/{UserId}
+
+  UpdateUser(userId: string, updateModel: UserUpdate): Observable<any> {
+    return this.http.put<any>(
+      `${this.ApiBaseUrl}/Users/Update/${userId}`,
+      updateModel
+    );
+  }
+
+  // DELETE
+  // /api/Users/DeleteUser/{UserId}
+  DeleteUser(userId: string): Observable<any> {
+    return this.http.delete<any>(
+      `${this.ApiBaseUrl}/Users/DeleteUser/${userId}`
+    );
+  }
+  // GET
+  // /api/Users/getAllUsers
+
+  GetAllUsers(): Observable<userRequest[]> {
+    return this.http.get<userRequest[]>(`${this.ApiBaseUrl}/Users/getAllUsers`);
+  }
+  // GET
+  // /api/Users/GetUserById/{UserId}
+  GetUser(UserId: string): Observable<userRequest> {
     return this.http.get<userRequest>(
-      `${environment.apiBaseUrl}/api/user/${userId}?addAuth=true`
+      `${this.ApiBaseUrl}/Users/GetUserById/${UserId}`
     );
   }
-
-  userGoruntule(): Observable<userRequest[]> {
-    return this.http.get<userRequest[]>(
-      `${environment.apiBaseUrl}/api/user/all?addAuth=true`
-    );
-  }
-
-  userUpdateID(
-    userId: string,
-    userUpdate: UserUpdate
-  ): Observable<userRequest> {
-    return this.http.put<userRequest>(
-      `${environment.apiBaseUrl}/api/user/UpdateUser/${userId}?addAuth=true`,
-      userUpdate
-    );
-  }
-  /*
-  userDeleteID(id: string): Observable<userRequest> {
-    return this.http.delete<userRequest>(
-      `${environment.apiBaseUrl}/api/user/${id}?addAuth=true`
-    );
-  }
-*/
-  deleteUserID(userId: string): Observable<userRequest> {
-    return this.http.delete<userRequest>(
-      `${environment.apiBaseUrl}/api/user/DeleteUser/${userId}?addAuth=true`
-    );
-  }
-
-  /**/
 }

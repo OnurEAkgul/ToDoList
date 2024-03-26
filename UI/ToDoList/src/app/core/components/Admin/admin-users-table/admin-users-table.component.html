@@ -1,0 +1,47 @@
+<div class="card">
+    <p-table [value]="userModel" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]">
+        <ng-template pTemplate="header">
+            <tr>
+
+                <th style="width:33.3%">id</th>
+                <th style="width:33.3%">userName</th>
+                <th style="width:33.3%">email</th>
+                <th style="width:33.3%">Options</th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-todo>
+            <tr>
+
+                <td>{{ todo.id }}</td>
+                <td>{{ todo.userName }}</td>
+                <td>{{ todo.email }}</td>
+
+
+
+                <td>
+                    <button pButton [routerLink]="['tablo/guncelle/', todo.id]">
+                        Detaylar
+                    </button>
+                </td>
+                <td>
+                    <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="DeleteItem(todo.id)"
+                        [disabled]="deleteInProgress">
+                    </p-button>
+
+
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" [routerLink]="['tablo/ekle']"
+                styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
+        </ng-template>
+    </p-table>
+</div>

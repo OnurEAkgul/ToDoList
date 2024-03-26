@@ -40,7 +40,7 @@ namespace Presentation.Controllers
 
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(new {message="A new item has been added successfully"});
             }
             return BadRequest(result.Message);
         }
@@ -57,7 +57,7 @@ namespace Presentation.Controllers
 
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(new { message = "An item has been successfully deleted" });
             }
             return BadRequest(result.Message);
         }
@@ -78,7 +78,7 @@ namespace Presentation.Controllers
 
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(new { message = "ToDoList updated successfully" });
             }
             return BadRequest(result.Message);
         }
@@ -99,7 +99,7 @@ namespace Presentation.Controllers
 
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(new { message = "ToDoList updated successfully" });
             }
             return BadRequest(result.Message);
         }
@@ -131,7 +131,7 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Authorize(Roles = "userRole")]
-        [Route("add/{id:guid}")]
+        [Route("get/{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _toDoListService.GetByIdAsync(id);

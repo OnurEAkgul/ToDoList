@@ -1,0 +1,53 @@
+<div class="card">
+    <p-table [value]="TodoModel" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:16.6%" hidden>id</th>
+                <th style="width:16.6%">title</th>
+                <th style="width:16.6%">description</th>
+                <th style="width:16.6%">isCompleted</th>
+                <th style="width:16.6%" hidden>userId</th>
+                <th style="width:16.6%">Options</th>
+                <th style="width:16.6%">Check</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-todo>
+            <tr>
+
+                <td hidden>{{ todo.id }}</td>
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.description }}</td>
+                <td>{{ todo.isCompleted }}</td>
+                <td hidden>{{ todo.userId }}</td>
+
+
+                <td>
+                    <button pButton [routerLink]="['tablo/guncelle/', todo.id]">
+                        Detaylar
+                    </button>
+                </td>
+                <td>
+                    <p-checkbox [(ngModel)]="todo.isCompleted" [binary]="true" inputId="binary"
+                        (ngModelChange)="UpdateStatus(todo)"></p-checkbox>
+                </td>
+                <td>
+                    <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="DeleteItem(todo.id)"
+                        [disabled]="deleteInProgress">
+                    </p-button>
+
+
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" [routerLink]="['tablo/ekle']"
+                styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
+        </ng-template>
+    </p-table>
+</div>
