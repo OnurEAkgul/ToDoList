@@ -2941,11 +2941,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj",
+      "projectUniqueName": "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj",
+      "projectPath": "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj",
       "packagesPath": "C:\\Users\\onure\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\obj\\",
+      "outputPath": "D:\\GitHub\\ToDoList\\API\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\onure\\AppData\\Roaming\\NuGet\\NuGet.Config",

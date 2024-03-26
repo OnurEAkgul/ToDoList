@@ -4714,11 +4714,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Presentation\\Presentation.csproj",
+      "projectUniqueName": "D:\\GitHub\\ToDoList\\API\\Presentation\\Presentation.csproj",
       "projectName": "Presentation",
-      "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Presentation\\Presentation.csproj",
+      "projectPath": "D:\\GitHub\\ToDoList\\API\\Presentation\\Presentation.csproj",
       "packagesPath": "C:\\Users\\onure\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Presentation\\obj\\",
+      "outputPath": "D:\\GitHub\\ToDoList\\API\\Presentation\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\onure\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -4735,14 +4735,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Business\\Business.csproj": {
-              "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Business\\Business.csproj"
+            "D:\\GitHub\\ToDoList\\API\\Business\\Business.csproj": {
+              "projectPath": "D:\\GitHub\\ToDoList\\API\\Business\\Business.csproj"
             },
-            "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj"
+            "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj": {
+              "projectPath": "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj"
             },
-            "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\DataAccess.csproj"
+            "D:\\GitHub\\ToDoList\\API\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "D:\\GitHub\\ToDoList\\API\\DataAccess\\DataAccess.csproj"
             }
           }
         }

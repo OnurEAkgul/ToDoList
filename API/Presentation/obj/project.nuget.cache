@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UTdpTkxRCOxgIyII0kdl8NiDl543B9WAbDnta/4wR5ujSjVL5xSVoXLAndC+D1ZpySd4SU5yvSB1ZzpsyPPW+g==",
+  "dgSpecHash": "I1V8zXp75xo9tnAP+S7SmIvwhxdE7qSXDe1c7omZYPUfPClqDdWPHnRU8UjApNJlJ17ORdlJkoD1KUy5Tvpv9Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Presentation\\Presentation.csproj",
+  "projectFilePath": "D:\\GitHub\\ToDoList\\API\\Presentation\\Presentation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\onure\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\onure\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

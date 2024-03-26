@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\DataAccess.csproj": {}
+    "D:\\GitHub\\ToDoList\\API\\DataAccess\\DataAccess.csproj": {}
   },
   "projects": {
-    "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj": {
+    "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj",
+        "projectUniqueName": "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj",
+        "projectPath": "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\onure\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\obj\\",
+        "outputPath": "D:\\GitHub\\ToDoList\\API\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\onure\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -91,14 +91,14 @@
         }
       }
     },
-    "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\DataAccess.csproj": {
+    "D:\\GitHub\\ToDoList\\API\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "D:\\GitHub\\ToDoList\\API\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\DataAccess.csproj",
+        "projectPath": "D:\\GitHub\\ToDoList\\API\\DataAccess\\DataAccess.csproj",
         "packagesPath": "C:\\Users\\onure\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\DataAccess\\obj\\",
+        "outputPath": "D:\\GitHub\\ToDoList\\API\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\onure\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -115,8 +115,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\onure\\source\\repos\\ToDoList\\API\\Core\\Core.csproj"
+              "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj": {
+                "projectPath": "D:\\GitHub\\ToDoList\\API\\Core\\Core.csproj"
               }
             }
           }
