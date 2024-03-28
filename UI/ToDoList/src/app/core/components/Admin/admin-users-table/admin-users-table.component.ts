@@ -7,6 +7,7 @@ import { TableGetResponse } from '../../features/models/table-get-response.model
 import { UpdateStatusRequest } from '../../features/models/table-update-status-request.model';
 import { userRequest } from '../../Authentication/models/user.model';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-users-table',
@@ -24,7 +25,8 @@ export class AdminUsersTableComponent implements OnInit, OnDestroy {
   getSubscription?: Subscription;
   constructor(
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
   ) {
     this.TokenContent = {
       unique_name: '',
@@ -48,6 +50,10 @@ export class AdminUsersTableComponent implements OnInit, OnDestroy {
     this.TokenControl = this.cookieService.check('Authorization');
     if (this.TokenControl) {
       this.TokenContent = this.userService.tokenDecode();
+      if (!this.TokenContent.role.includes('adminRole')) {
+        this.router.navigateByUrl('/main');
+      }
+
       // console.log(this.TokenContent.nameid);
       this.GetTableContent(this.TokenContent.nameid);
     }

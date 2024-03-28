@@ -6,6 +6,8 @@ import { TodolistService } from '../../features/services/todolist.service';
 import { TableGetResponse } from '../../features/models/table-get-response.model';
 import { UpdateStatusRequest } from '../../features/models/table-update-status-request.model';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Token } from '@angular/compiler';
 @Component({
   selector: 'app-admin-to-do-list-table',
   templateUrl: './admin-to-do-list-table.component.html',
@@ -25,7 +27,8 @@ export class AdminToDoListTableComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private listService: TodolistService
+    private listService: TodolistService,
+    private router: Router
   ) {
     this.TokenContent = {
       unique_name: '',
@@ -48,8 +51,13 @@ export class AdminToDoListTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.TokenControl = this.cookieService.check('Authorization');
+    console.log(this.TokenControl);
     if (this.TokenControl) {
       this.TokenContent = this.userService.tokenDecode();
+      console.log(this.TokenContent.role);
+      if (!this.TokenContent.role.includes('adminRole')) {
+        this.router.navigateByUrl('/main');
+      }
       // console.log(this.TokenContent.nameid);
       this.GetTableContent();
       this.getUserName();

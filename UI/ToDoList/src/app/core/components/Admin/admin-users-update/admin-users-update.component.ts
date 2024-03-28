@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserUpdate } from '../../Authentication/models/user-update.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../Authentication/services/user.service';
+import { TokenContent } from '../../Authentication/models/tokenContent';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-admin-users-update',
   templateUrl: './admin-users-update.component.html',
@@ -9,14 +11,16 @@ import { UserService } from '../../Authentication/services/user.service';
 })
 export class AdminUsersUpdateComponent implements OnInit {
   model: UserUpdate;
-
+  TokenContent: TokenContent;
+  TokenControl: boolean = false;
   userId: string = '';
   fromParameter: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {
     this.model = {
       currentPassword: '',
@@ -24,8 +28,25 @@ export class AdminUsersUpdateComponent implements OnInit {
       userName: '',
       newPassword: '',
     };
+    this.TokenContent = {
+      unique_name: '',
+      email: '',
+      nameid: '',
+      role: '',
+      nbf: 0,
+      exp: 0,
+      iat: 0,
+    };
   }
   ngOnInit(): void {
+    this.TokenControl = this.cookieService.check('Authorization');
+    if (this.TokenControl) {
+      this.TokenContent = this.userService.tokenDecode();
+      if (!this.TokenContent.role.includes('adminRole')) {
+        this.router.navigateByUrl('/main');
+      }
+    }
+
     this.route.paramMap.subscribe({
       next: (params) => {
         const idParam = params.get('UserId');
