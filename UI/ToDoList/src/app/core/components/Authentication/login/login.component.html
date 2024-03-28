@@ -21,7 +21,7 @@
 
                 <label for="passwordInput" class="block text-900 font-medium text-xl mb-2">Password</label>
                 <p-password id="passwordInput" [(ngModel)]="model.Password" name="passwordInput" placeholder="Password"
-                    #passwordInput="ngModel" [toggleMask]="true" styleClass="mb-5"
+                    #passwordInput="ngModel" [toggleMask]="true" [feedback]="false" styleClass="mb-5"
                     inputStyleClass="w-full p-3 md:w-30rem"></p-password>
                 <div *ngIf="passwordInput.touched && passwordInput.invalid" class="text-danger">
                     Please enter a valid password

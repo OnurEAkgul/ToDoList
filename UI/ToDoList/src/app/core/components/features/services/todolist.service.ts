@@ -14,41 +14,35 @@ export class TodolistService {
   ApiBaseUrl = environment.apiBaseUrl + '/api';
   constructor(private http: HttpClient) {}
 
-  //   POST
-  // /api/ToDoList/add/{UserId}
+  /*   POST
+  // /api/ToDoList/add/{UserId}*/
   AddItem(UserId: string, model: AddModelRequest): Observable<void> {
     return this.http.post<void>(
       `${this.ApiBaseUrl}/ToDoList/add/${UserId}`,
       model
     );
   }
-
-  // DELETE
-  // /api/ToDoList/delete/{id}
+  /* DELETE
+  // /api/ToDoList/delete/{id}*/
   DeleteItem(id: string): Observable<void> {
     return this.http.delete<void>(`${this.ApiBaseUrl}/ToDoList/delete/${id}`);
   }
-
-  // GET
-  // /api/ToDoList/userId/{userId}
+  /* GET
+  // /api/ToDoList/userId/{userId}*/
   GetTable(userId: string): Observable<TableGetResponse[]> {
     return this.http.get<TableGetResponse[]>(
       `${this.ApiBaseUrl}/ToDoList/userId/${userId}`
     );
   }
-
-  // GET
-  // /api/ToDoList/get/{id}
-
+  /* GET
+  // /api/ToDoList/get/{id}*/
   GetTableId(id: string): Observable<TableGetResponse> {
     return this.http.get<TableGetResponse>(
       `${this.ApiBaseUrl}/ToDoList/get/${id}`
     );
   }
-
-  //   PUT
-  // /api/ToDoList/update/content/{Id}
-
+  /*  PUT
+  // /api/ToDoList/update/content/{Id}*/
   UpdateTableContent(
     Id: string,
     tableModel: TableUpdateModelRequest
@@ -58,10 +52,8 @@ export class TodolistService {
       tableModel
     );
   }
-
-  //   PUT
-  // /api/ToDoList/update/status/{Id}
-
+  /*  PUT
+  // /api/ToDoList/update/status/{Id}*/
   UpdateTableStatus(
     id: string,
     isCompleted: UpdateStatusRequest
@@ -71,44 +63,36 @@ export class TodolistService {
       isCompleted
     );
   }
-
-  //   GET
-  // /api/ToDoList/getAll
-
+  /*  GET
+  // /api/ToDoList/getAll*/
   GetAllTableContent(): Observable<TableGetResponse[]> {
     return this.http.get<TableGetResponse[]>(
       `${this.ApiBaseUrl}/ToDoList/getAll`
     );
   }
-
-  //   GET
-  // /api/ToDoList/Completed
-
+  /*   GET
+  // /api/ToDoList/Completed*/
   GetCompletedTableContent(): Observable<TableGetResponse[]> {
     return this.http.get<TableGetResponse[]>(
       `${this.ApiBaseUrl}/ToDoList/Completed`
     );
   }
-
-  // GET
-  // /api/ToDoList/NotCompleted
-
+  /* GET
+  // /api/ToDoList/NotCompleted*/
   GetNotCompletedTableContent(): Observable<TableGetResponse[]> {
     return this.http.get<TableGetResponse[]>(
       `${this.ApiBaseUrl}/ToDoList/NotCompleted`
     );
   }
-  // GET
-  // /api/ToDoList/Completed/{userId}
-
+  /* GET
+  // /api/ToDoList/Completed/{userId}*/
   GetCompletedTableContentById(userId: string): Observable<TableGetResponse[]> {
     return this.http.get<TableGetResponse[]>(
       `${this.ApiBaseUrl}/ToDoList/Completed/${userId}`
     );
   }
-
-  // GET
-  // /api/ToDoList/NotCompleted/{userId}
+  /* GET
+  // /api/ToDoList/NotCompleted/{userId}*/
   GetNotCompletedTableContentById(
     userId: string
   ): Observable<TableGetResponse[]> {

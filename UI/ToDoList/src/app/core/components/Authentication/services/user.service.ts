@@ -18,6 +18,7 @@ import { jwtDecode } from 'jwt-decode';
 export class UserService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
   ApiBaseUrl = environment.apiBaseUrl + '/api';
+
   userEkle(model: signupRequest): Observable<userRequest> {
     return this.http.post<userRequest>(
       `${this.ApiBaseUrl}/Users/signUp`,
@@ -49,10 +50,8 @@ export class UserService {
       this.cookieService.delete('Authorization');
     }
   }
-
-  //   PUT
-  // /api/Users/Update/{UserId}
-
+  /*  PUT
+   /api/Users/Update/{UserId}*/
   UpdateUser(
     userId: string,
     updateModel: UserUpdate,
@@ -70,22 +69,20 @@ export class UserService {
       );
     }
   }
-
-  // DELETE
-  // /api/Users/DeleteUser/{UserId}
+  /*DELETE
+  // /api/Users/DeleteUser/{UserId}*/
   DeleteUser(userId: string): Observable<any> {
     return this.http.delete<any>(
       `${this.ApiBaseUrl}/Users/DeleteUser/${userId}`
     );
   }
-  // GET
-  // /api/Users/getAllUsers
-
+  /* GET
+  // /api/Users/getAllUsers*/
   GetAllUsers(): Observable<userRequest[]> {
     return this.http.get<userRequest[]>(`${this.ApiBaseUrl}/Users/getAllUsers`);
   }
-  // GET
-  // /api/Users/GetUserById/{UserId}
+  /* GET
+  // /api/Users/GetUserById/{UserId}*/
   GetUser(UserId: string): Observable<userRequest> {
     return this.http.get<userRequest>(
       `${this.ApiBaseUrl}/Users/GetUserById/${UserId}`
