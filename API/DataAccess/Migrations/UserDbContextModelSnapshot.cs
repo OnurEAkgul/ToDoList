@@ -17,7 +17,7 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -187,15 +187,15 @@ namespace DataAccess.Migrations
                         {
                             Id = "4795ef64-44c4-434e-8f6a-3d614bb9373a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2a830e26-bb52-4e37-936a-eecdc40f9985",
+                            ConcurrencyStamp = "4588f2c9-1b1f-4539-97c2-f3ea5621a157",
                             Email = "admin@todo.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@TODO.COM",
                             NormalizedUserName = "ADMIN@TODO.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIbH+//Eicl7R1y/zmqch1h1GlOZSJNtwp3sDpB22B97K7FrjztNsriM6xbglHU51g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBlJK2FmJaRucFY5vIEHZtHWjGmrIGSYxVKmbMEvkj/5uEj8Wl6RFxpte6bBlW1tCQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8a41b8e0-48b1-4dd5-9d4b-c9fe22870333",
+                            SecurityStamp = "f013f54f-c738-42d8-ac7b-70d8f5b2bbcd",
                             TwoFactorEnabled = false,
                             UserName = "admin@todo.com"
                         });
