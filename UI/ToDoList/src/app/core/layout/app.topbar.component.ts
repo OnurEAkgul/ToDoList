@@ -52,6 +52,7 @@ export class AppTopBarComponent {
     //     console.log(currentTime);
     //     this.logout();
     //     return;
+    //
   }
   //   // // Check local storage to initialize authentication status
   //   // // this.userService.updateAuthenticationStatus(
